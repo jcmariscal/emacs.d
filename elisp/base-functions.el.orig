@@ -1,0 +1,74 @@
+;; Add your custom functions here
+
+;; (defun something
+;;    (do-something))
+
+(package-initialize)
+
+;; org-babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (C . t)
+   (calc . t)
+   (latex . t)
+   (java . t)
+   (ruby . t)
+   (lisp . t)
+   (scheme . t)
+   (shell . t)
+   (sqlite . t)
+   (js . t)
+   (restclient . t)))
+
+;; evil mode
+;; pre-requisite: install evil from package manager
+  (require `evil)
+  (evil-mode 1)
+   (defun my-move-key (keymap-from keymap-to key)
+     "Moves key binding from one keymap to another, deleting from the old location. "
+     (define-key keymap-to key (lookup-key keymap-from key))
+     (define-key keymap-from key nil))
+   (my-move-key evil-motion-state-map evil-normal-state-map (kbd "RET"))
+   (my-move-key evil-motion-state-map evil-normal-state-map " ")
+
+;; slime defaults
+;; Set your lisp system and, optionally, some contribs
+(setq inferior-lisp-program "/opt/sbcl/bin/sbcl")
+(setq slime-contribs '(slime-fancy))
+
+;; kill all buffers except current one
+(defun kill-other-buffers ()
+      "Kill all other buffers."
+      (interactive)
+      (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+
+;; org-mode insert source after selecting text
+;; author zck: https://emacs.stackexchange.com/questions/5740/how-to-quickly-format-selected-code-in-org-mode
+(defun org-wrap-source ()
+  (interactive)
+  (let ((start (min (point) (mark)))
+        (end (max (point) (mark))))
+    (goto-char end)
+    (unless (bolp)
+      (newline))
+    (insert "#+END_SRC\n")
+    (goto-char start)
+    (unless (bolp)
+      (newline))
+    (insert "#+BEGIN_SRC\n")))
+
+;; (define-key global-mode-map (kbd "C - c o") 'org-wrap-source)
+(global-set-key (kbd "C-c c p p") 'org-wrap-source) ; C-c c p p
+(provide 'base-functions)
+
+
+;; Dokuwiki module
+<<<<<<< HEAD
+(require 'dokuwiki)
+=======
+;; need to enable remote API system
+(require' dokuwiki)
+>>>>>>> 66d1fb9f79decb300d93eb6e14821003bfc8dd68
+(setq dokuwiki-xml-rpc-url "http://www.aerouponic.com/lib/exe/xmlrpc.php")
+(setq dokuwiki-login-user-name "jc")
