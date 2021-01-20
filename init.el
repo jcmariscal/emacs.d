@@ -29,3 +29,5 @@
 (require 'lang-rust)
 (require 'lang-racket)
 (require 'lang-c)
+(require 'custom-evil-vim)
+(require 'custom-rebox2)

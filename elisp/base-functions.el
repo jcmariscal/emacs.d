@@ -4,6 +4,51 @@
 ;;    (do-something))
 
 (package-initialize)
+(load-library "./nip.el.gpg")
+
+;;;; ORG PUBLISHING
+;; depends on nip.el.gpg
+(require 'ox-publish)
+(setq org-publish-project-alist
+      (list
+	`("project-notes-helper-org-files"
+	 ;:base-directory "~/foo/notes/"
+	 :base-directory ,my-project-notes-base-directory
+	 :base-extension "org"
+	 ;:publishing-directory "~/foo/notes/_exported_html"
+	 :publishing-directory ,my-project-notes-publishing-directory
+	 :recursive t
+	 :publishing-function org-html-publish-to-html
+	 :headline-levels 4             ; Just the default for this project.
+	 :auto-preamble t
+	 )
+
+	`("project-notes-helper-static-cs"
+	 ;:base-directory "~/foo/notes/"
+	 :base-directory ,my-project-notes-cs-directory
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|js"
+	 ;:publishing-directory "~/foo/notes/_exported_html/"
+	 :publishing-directory ,my-project-notes-publishing-directory
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+
+	`("project-notes-helper-static-trading"
+	 ;:base-directory "~/foo/notes/"
+	 :base-directory ,my-project-notes-trading-directory
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|js"
+	 ;:publishing-directory "~/foo/notes/_exported_html/"
+	 :publishing-directory ,my-project-notes-publishing-directory
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+
+	'("project-notes" :components ("project-notes-helper-org-files"
+				       "project-notes-helper-static-cs"
+				       "project-notes-helper-static-trading"))
+
+	))
+
 
 ;;;; =======================
 ;;;; COMPANY-MODE
@@ -38,9 +83,9 @@
 
 ;; source: https://stackoverflow.com/questions/20624024/what-is-the-best-way-to-open-remote-files-with-emacs-and-ssh
 ;; (setq url-hetzner "/ssh:root@000.000.00.00:/root/")
-;; /method:user@host#port:filename 
+;; /method:user@host#port:filename
 ;; https://www.gnu.org/software/tramp/
-(load-library "./nip.el.gpg")
+;; depends on: nip.el.gpg
 (defun login-hetz ()
     (interactive)
     (find-file-literally url-hetzner))
@@ -342,8 +387,8 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
   (set-frame-parameter (selected-frame) 'alpha value))
 
 ;; set transparency parameters and font
-(set-frame-parameter (selected-frame) 'alpha '(85 85))
-(add-to-list 'default-frame-alist '(alpha 85 85))
+(set-frame-parameter (selected-frame) 'alpha '(90 90))
+(add-to-list 'default-frame-alist '(alpha 90 90))
 (set-face-attribute 'default nil :background "black"
 		    ;:foreground "white" :font "IBM Plex Mono" :weight 'normal :width 'normal :height 120)
 		    :foreground "white" :font "Pragmata Pro Mono" :weight 'normal :width 'normal :height 120)
