@@ -20,8 +20,9 @@
   "cc" 'evilnc-comment-or-uncomment-lines
   "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
   "cy" 'evilnc-copy-and-comment-lines
-  "cs" 'comment-dwim
+  "cs" 'comment-dwim			     ; this type of comment
   "ct" 'evilnc-comment-or-uncomment-html-tag ; evil-nerd-commenter v3.3.0 required
+  "cb" 'rebox-cycle
   ;; slime
   "er" 'slime-eval-region
   "ed" 'slime-eval-defun

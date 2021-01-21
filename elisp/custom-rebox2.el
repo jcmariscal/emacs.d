@@ -60,16 +60,19 @@
 
 (require 'rebox2)
 
-(setq rebox-style-loop '(21 75 76 77 78 46 47 48 49 50 11)) ;
-(setq custom-rebox2-lisp-mode-box-style-list '(21 75 76 77 78 11))
+(setq rebox-style-loop '(21 75 76 77 78 46 47 48 49 50 111 11))
+(setq rebox-min-fill-column 40)
+;(setq custom-rebox2-lisp-mode-box-style-list '(21 75 76 77 78 11))
 
 (global-set-key [(meta shift q)] 'rebox-cycle)
 ;;(global-set-key [(meta q)] 'rebox-dwim)
 
-(add-hook 'emacs-lisp-mode-hook (lambda ()
-				  (set (make-local-variable 'rebox-style-loop) custom-rebox2-lisp-mode-box-style-list)
-				  (set (make-local-variable 'rebox-min-fill-column) 40)
-				  (rebox-mode 1)))
+;;(add-hook 'emacs-lisp-mode-hook (lambda ()
+;;				  (set (make-local-variable 'rebox-style-loop) custom-rebox2-lisp-mode-box-style-list)
+;;				  (set (make-local-variable 'rebox-min-fill-column) 40)
+;;				  (rebox-mode 1)))
+
+;; TODO C only mode hook
 
 (provide 'custom-rebox2)
 
