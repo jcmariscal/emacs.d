@@ -32,3 +32,4 @@
 (require 'custom-evil-vim)
 (require 'custom-rebox2)
 (require 'custom-worklog)
+(require 'custom-org-mode)
