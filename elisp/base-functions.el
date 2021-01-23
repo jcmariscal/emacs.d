@@ -387,8 +387,8 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
   (set-frame-parameter (selected-frame) 'alpha value))
 
 ;; set transparency parameters and font
-(set-frame-parameter (selected-frame) 'alpha '(90 90))
-(add-to-list 'default-frame-alist '(alpha 90 90))
+(set-frame-parameter (selected-frame) 'alpha '(100 100))
+(add-to-list 'default-frame-alist '(alpha 100 100))
 (set-face-attribute 'default nil :background "black"
 		    ;:foreground "white" :font "IBM Plex Mono" :weight 'normal :width 'normal :height 120)
 		    :foreground "white" :font "Pragmata Pro Mono" :weight 'normal :width 'normal :height 120)

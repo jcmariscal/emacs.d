@@ -4,7 +4,17 @@
 (package-initialize)
 (require 'custom-evil-vim-wrapper)
 
-;; {{ use `;` as leader key
+
+;; =====================================
+;; custom normal state maps
+;; =====================================
+
+(define-key evil-normal-state-map "gf" 'helm-find-files)
+
+;; =====================================
+;; ";" leader key maps
+;; =====================================
+
 (general-create-definer my-comma-leader-def
   :prefix ";"
   :states '(normal visual))
@@ -35,6 +45,16 @@
   "lr" 'eval-region
   ;; indent
   "ir" 'indent-region
+  ;; org-mode
+  "oc" 'org-update-checkbox-count
+  "ox" 'org-toggle-checkbox
+  "od" 'org-update-all-dblocks
+  "oe" 'org-babel-execute-src-block-maybe
+  "ot" 'org-babel-tangle
+  "oi" 'org-clock-in
+  "oo" 'org-clock-out
+  "ol" 'worklog-quick-start
+
 
 ;;   "bf" 'beginning-of-defun
 ;;   "bu" 'backward-up-list

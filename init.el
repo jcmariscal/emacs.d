@@ -31,3 +31,4 @@
 (require 'lang-c)
 (require 'custom-evil-vim)
 (require 'custom-rebox2)
+(require 'custom-worklog)
