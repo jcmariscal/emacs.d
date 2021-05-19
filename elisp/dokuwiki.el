@@ -121,14 +121,7 @@ is saved as \"wikiurl.com/wiki-page\".  On the other hand, a buffer of
   (interactive)
   (if (not (y-or-n-p (concat "Do you want to login?")))
       (message "not-logging-in")
-    (let* ((xml-rpc-url (dokuwiki--get-xml-rpc-url))
-	   (credentials (dokuwiki--credentials))
-	   (login-user-name (plist-get credentials :user))
-	   (login-password (plist-get credentials :password)))
-      (if (not (xml-rpc-method-call xml-rpc-url 'dokuwiki.login login-user-name login-password))
-	  (error "Login unsuccessful! Check if your dokuwiki-xml-rpc-url or login credentials are correct!")
-	(message "Login successful!")
-	(setq dokuwiki--has-successfully-logged-in t)))))
+    (dokuwiki-login)))
 
 ; save-fast function
 (defun dokuwiki-sf ()
