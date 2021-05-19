@@ -115,13 +115,13 @@ is saved as \"wikiurl.com/wiki-page\".  On the other hand, a buffer of
 	       (message "Saving successful with summary %s and minor of %s." summary minor)
 	     (error "Saving unsuccessful!")))))))
 
-; temporary funcion to ask whether the user wants to login or not
+;; login only if not-signed in already
 (defun dokuwiki-l ()
   "Connects to the dokuwiki."
   (interactive)
-  (if (not (y-or-n-p (concat "Do you want to login?")))
-      (message "not-logging-in")
-    (dokuwiki-login)))
+  (if (not dokuwiki--has-successfully-logged-in)
+      (dokuwiki-login)
+    (message "already logged in")))
 
 ; save-fast function
 (defun dokuwiki-sf ()
@@ -171,21 +171,14 @@ is saved as \"wikiurl.com/wiki-page\".  On the other hand, a buffer of
   "login and list pages"
   (dokuwiki-sa)
   (interactive)
-  (if (not dokuwiki--has-successfully-logged-in)
-      (user-error "Login first before listing the pages")
-    (let ((page-detail-list (xml-rpc-method-call dokuwiki-xml-rpc-url 'wiki.getAllPages))
-	  (wiki-title (dokuwiki-get-wiki-title))
-	  (page-list ()))
-      (dolist (page-detail page-detail-list)
-	(push (cdr (assoc "id" page-detail)) page-list)
-	)
-      (dokuwiki-open-page (completing-read "Select a page to open: " page-list)))))
+  (dokuwiki-list-pages))
 
 ; todo: save all buffers
 (defun dokuwiki-sa ()
   "Saves all opened dokuwiki buffers"
   (dokuwiki-l)
   (interactive)
+  ;; local function: save-buffer-matches
   ;; (save-buffer-matches string) -> list of matched
   ;; creates a list of matches in elisp buffer list
   ;; eg. (save-buffer-matches "dwiki") -> ("foo.dwiki" "foo2.dwiki")
@@ -227,8 +220,8 @@ is saved as \"wikiurl.com/wiki-page\".  On the other hand, a buffer of
 
 (defun dokuwiki-list-pages ()
   "Show a selectable list containing pages from the current wiki."
-  (dokuwiki-login)
   (interactive)
+  (dokuwiki-l)
   (if (not dokuwiki--has-successfully-logged-in)
       (user-error "Login first before listing the pages")
     (let ((page-detail-list (xml-rpc-method-call dokuwiki-xml-rpc-url 'wiki.getAllPages))
