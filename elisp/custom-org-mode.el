@@ -1,8 +1,44 @@
 (load-library "./nip.el.gpg")
+(require 'org-ref)
+(require 'org-id)
+(require 'org-ref-wos)
+(require 'org-ref-scopus)
+(require 'org-ref-pubmed)
+(require 'dash)
+(require 'ox-publish)
 
 ;; =====================================
 ;; ORG-MODE
 ;; =====================================
+
+;; set variable to allow for inline-image resizing within org-mode for large images
+
+(setq org-image-actual-width t)
+;; -------------------------------------
+;; ORG-BABEL
+;; -------------------------------------
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (C . t)
+   (calc . t)
+   (latex . t)
+   (java . t)
+   (ruby . t)
+   (lisp . t)
+   (scheme . t)
+   (shell . t)
+   (sqlite . t)
+   (js . t)
+   (restclient . t)))
+
+;; javascript support
+(require 'ob-js)
+(add-to-list 'org-babel-load-languages '(js . t))
+(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
+(add-to-list 'org-babel-tangle-lang-exts '("js" . "js"))
+
 
 ;; disable company-mode in org
 (setq company-global-modes '(not org-mode))
@@ -10,7 +46,9 @@
 ;; Some org-mode customization
 (setq org-src-fontify-natively t
       org-confirm-babel-evaluate nil
-      org-src-preserve-indentation t)
+      org-src-preserve-indentation t
+      ;; https://stackoverflow.com/questions/15773354/indent-code-in-org-babel-src-blocks
+      org-src-tab-acts-natively t)
 
 
 ;; increase size of font in math formulas
@@ -21,9 +59,14 @@
 ;; set agenda files folder and regex recursively (to see tags and agenda items)
 ;; source: https://stackoverflow.com/questions/24966333/emacs-org-mode-tags-not-found
 (setq org-agenda-files (append
-			(list "~/")
-			(directory-files-recursively "~/0s4ts1d3/" "\\.org$")))
+			(list "~/schedule.org")
+			(list "~/schedule.org.gpg")
+			(directory-files-recursively "~/0s4ts1d3/notes/" "\\.org$")))
 (setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
+
+;; log time when org todo is done
+;; source: https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html#org2e8459c
+(setq org-log-done t)
 
 ;; break emacs
 ;; (setq org-ref-completion-library 'org-ref-ivy-cite)
@@ -32,12 +75,11 @@
 
 (setq org-ref-completion-library 'org-ref-helm)
 
-;; =====================================
+;; -------------------------------------
 ;; ORG PUBLISHING
-;; =====================================
+;; -------------------------------------
 
 ;; depends on nip.el.gpg
-(require 'ox-publish)
 (setq org-publish-project-alist
       (list
 	`("project-notes-helper-org-files"
@@ -78,24 +120,24 @@
 
 	))
 
-;; ======================================
+;; -------------------------------------
 ;; ORG-REF
 ;; SOURCE:
-;; =======================================
+;; -------------------------------------
 
 ;; ;; setup org-ref
 
 ;; turn off if slow in large files
 ;; (setq org-ref-show-broken-links t)
 
- (setq org-ref-bibliography-notes "~/org-ref/notes.org"
-       org-ref-default-citation-link "parencite"
-       org-ref-notes-directory "~/org-ref/"
-       org-ref-default-bibliography '("~/org-ref/references.bib")
-       org-ref-pdf-directory "~/org-ref/bibtex-pdfs/")
+(setq org-ref-bibliography-notes "~/org-ref/notes.org"
+      org-ref-default-citation-link "parencite"
+      org-ref-notes-directory "~/org-ref/"
+      org-ref-default-bibliography '("~/org-ref/references.bib")
+      org-ref-pdf-directory "~/org-ref/bibtex-pdfs/")
 
- (unless (file-exists-p org-ref-pdf-directory)
-   (make-directory org-ref-pdf-directory t))
+(unless (file-exists-p org-ref-pdf-directory)
+  (make-directory org-ref-pdf-directory t))
 
 
 ;; -------------------------------------
@@ -173,39 +215,50 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
 ;; =============
 
 ;; source: https://github.com/marcinkoziej/org-pomodoro/issues/89
+
+(defun org-pomodoro-ask-duration ()
+  "Ask user for pomodoro timer length defaults"
+  (interactive)
+  (setq org-pomodoro-length (read-number "pomodoro duration:"))
+  (setq org-pomodoro-short-break-length (read-number "short break length:"))
+  (setq org-pomodoro-long-break-length (read-number "long break length:")))
+
+(defun my-timer-block-notice (seconds message-s)
+  "displays a block-notice box after x seconds with message string message-s"
+  (run-with-timer seconds nil
+		  (lambda (msg)
+		    (message-box msg))
+		  message-s))
+
+(defun my-org-pomodoro-message-box-after-break ()
+  "Resume Org Pomodoro after break is finished."
+  (my-timer-block-notice 0 "break finishes!"))
+
 (defun my-org-pomodoro-resume-after-break ()
   "Resume Org Pomodoro after break is finished."
+  (my-timer-block-notice 0 "break finishes!")
   (org-clock-goto)
   (org-pomodoro))
-(setq org-pomodoro-length 25)
-(setq org-pomodoro-short-break-length 5)
-(setq org-pomodoro-long-break-length 10)
-(add-hook 'org-pomodoro-break-finished-hook #'my-org-pomodoro-resume-after-break)
 
-;; =====================================
-;; ORG-BABEL
-;; =====================================
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (C . t)
-   (calc . t)
-   (latex . t)
-   (java . t)
-   (ruby . t)
-   (lisp . t)
-   (scheme . t)
-   (shell . t)
-   (sqlite . t)
-   (js . t)
-   (restclient . t)))
 
-;; javascript support
-(require 'ob-js)
-(add-to-list 'org-babel-load-languages '(js . t))
-(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
-(add-to-list 'org-babel-tangle-lang-exts '("js" . "js"))
+(defun my-org-pomodoro-message-box-after-pomodoro ()
+  "show block notice when pomodoro starts"
+  (my-timer-block-notice 0 "break starts!"))
 
+
+
+(setq org-pomodoro-length 60)
+(setq org-pomodoro-short-break-length 15)
+(setq org-pomodoro-long-break-length 120)
+(setq org-pomodoro-start-sound-p 1)
+
+;; enable instead to continue pomodoro running
+;; (add-hook 'org-pomodoro-break-finished-hook #'my-org-pomodoro-resume-after-break)
+
+;; message boxes when break or pomodoros are finished
+(add-hook 'org-pomodoro-break-finished-hook #'my-org-pomodoro-message-box-after-break)
+(add-hook 'org-pomodoro-finished-hook #'my-org-pomodoro-message-box-after-pomodoro)
+(add-hook 'org-pomodoro-started-hook nil)
 
 ;;;; ===========
 ;;;; org-bullets
@@ -237,10 +290,5 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
 ;; (define-key global-mode-map (kbd "C - c o") 'org-wrap-source)
 (global-set-key (kbd "C-c c p p") 'org-wrap-source) ; C-c c p p
 
-(require 'org-ref)
-(require 'org-id)
-(require 'org-ref-wos)
-(require 'org-ref-scopus)
-(require 'org-ref-pubmed)
-(require 'dash)
+
 (provide 'custom-org-mode)

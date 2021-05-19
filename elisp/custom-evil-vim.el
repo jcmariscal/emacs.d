@@ -4,6 +4,17 @@
 (package-initialize)
 (require 'custom-evil-vim-wrapper)
 
+;; =====================================
+;; evil-vim defaults
+;; =====================================
+
+;; -------------------------------------
+;; org-mode
+;; -------------------------------------
+
+(add-hook 'org-mode-hook
+      (lambda ()
+	(setq evil-auto-indent 'nil)))
 
 ;; =====================================
 ;; custom normal state maps
@@ -33,28 +44,41 @@
   "cs" 'comment-dwim			     ; this type of comment
   "ct" 'evilnc-comment-or-uncomment-html-tag ; evil-nerd-commenter v3.3.0 required
   "cb" 'rebox-cycle
+  ;; c shortcuts
+  "cg" 'ff-find-other-file
   ;; slime
-  "er" 'slime-eval-region
-  "ed" 'slime-eval-defun
-  "es" 'slime-eval-last-expression
-  "eb" 'slime-eval-buffer
+  "lb" 'slime-eval-buffer
+  "ld" 'slime-eval-defun
+  "lr" 'slime-eval-region
+  "ls" 'slime-eval-last-expression
   ;; emacs lisp
-  "lb" 'eval-buffer
-  "ld" 'eval-defun
-  "ls" 'eval-last-sexp
-  "lr" 'eval-region
+  "eb" 'eval-buffer
+  "ed" 'eval-defun
+  "er" 'eval-region
+  "es" 'eval-last-sexp
   ;; indent
   "ir" 'indent-region
   ;; org-mode
-  "oc" 'org-update-checkbox-count
   "ox" 'org-toggle-checkbox
-  "od" 'org-update-all-dblocks
   "oe" 'org-babel-execute-src-block-maybe
   "ot" 'org-babel-tangle
   "oi" 'org-clock-in
   "oo" 'org-clock-out
-  "ol" 'worklog-quick-start
+  "ol" 'org-toggle-latex-fragment
+  "op" 'org-pomodoro
+  "o'" 'org-edit-special		;to edit babel src blocks in another buffer
+  "ose" 'org-edit-special		;to edit babel src blocks in another buffer
+  "oso" 'org-edit-src-exit
+  "ouc" 'org-update-checkbox-count
+  "oud" 'org-update-all-dblocks
+  "oh" 'helm-org-in-buffer-headings
 
+  ; "ol" 'worklog-quick-start
+
+  ;; python-mode
+  "pg" 'jedi:goto-definition
+  "peb" 'python-shell-send-buffer
+  "per" 'python-shell-send-region
 
 ;;   "bf" 'beginning-of-defun
 ;;   "bu" 'backward-up-list

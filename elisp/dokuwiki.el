@@ -42,7 +42,7 @@
 
 (defgroup dokuwiki nil
   "Edit remote Dokuwiki pages using XML-RPC"
-  :group 'dokuwiki)
+ :group 'dokuwiki)
 
 (defcustom dokuwiki-xml-rpc-url ""
   "The url pointing to the \"xmlrpc.php\" file in the wiki to be accessed."

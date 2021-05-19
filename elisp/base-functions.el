@@ -20,7 +20,8 @@
 ;; =====================================
 
 ;; wrap lines
-(global-visual-line-mode 1)
+;; https://emacs.stackexchange.com/questions/19629/word-wrap-line-option-by-default
+(global-visual-line-mode t)
 
 
 ;;;; =======================
@@ -60,6 +61,7 @@
 (defun login-hetz ()
     (interactive)
     (find-file-literally url-hetzner))
+
 ;;;; ========================
 ;;;; PERFORMANCE ENHANCEMENTS
 ;;;; ========================
@@ -157,7 +159,11 @@
 
 ;; need to enable remote API system
 (require 'dokuwiki)
-(setq dokuwiki-xml-rpc-url url-dokuwiki)
+;; (setq dokuwiki-xml-rpc-url url-dokuwiki)
+;;(setq dokuwiki-xml-rpc-url "https://www.tostareweb.com")
+(setq dokuwiki-xml-rpc-url "http://tostareweb.com:9093/lib/exe/xmlrpc.php")
+;;(setq dokuwiki-xml-rpc-url "http://localhost:9091/lib/exe/xmlrpc.php")
+;;(setq dokuwiki-xml-rpc-url "http://34.203.212.15/lib/exe/xmlrpc.php")
 (setq dokuwiki-login-user-name "jc")
 
 ;; set dokuwiki major mode to .dwiki and .dokuwiki files
