@@ -171,6 +171,7 @@
 (add-to-list 'auto-mode-alist '("\\.dwiki\\'" . dokuwiki-mode))
 (add-to-list 'auto-mode-alist '("\\.dokuwiki\\'" . dokuwiki-mode))
 
+;; ================================
 ;; emacs -nw autocompletion in helm
 ;; ================================
 (require 'cl)
@@ -178,6 +179,7 @@
 ;;(define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
 ;;(define-key helm-map (kbd "C-z") #'helm-select-action)
 
+;; =====================
 ;; TRANSPARENCY
 ;; =====================
 ;; Set transparency of emacs
