@@ -56,24 +56,60 @@
 
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 3.0))
 
-;; set agenda files folder and regex recursively (to see tags and agenda items)
-;; source: https://stackoverflow.com/questions/24966333/emacs-org-mode-tags-not-found
-(setq org-agenda-files (append
-			(list "~/schedule.org")
-			(list "~/schedule.org.gpg")
-			(directory-files-recursively "~/0s4ts1d3/notes/" "\\.org$")))
-(setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
+(defun org-agenda-my-init-files()
+  (interactive)
+  (if (not (y-or-n-p (concat "Do you want to preload agenda files?")))
+      (message "cancelled saving files")
+    ;; set agenda files folder and regex recursively (to see tags and agenda items)
+    ;; source: https://stackoverflow.com/questions/24966333/emacs-org-mode-tags-not-found
+    (progn
+      (setq org-agenda-files (append
+			      (list "~/schedule.org")
+			      (list "~/schedule.org.gpg")
+			      (directory-files-recursively "~/0s4ts1d3/notes/" "\\.org$")))
+      (setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
+      ;; init agenda
+      (org-agenda-list)))
+  (switch-to-buffer "*dashboard*")
+  (delete-other-windows))
+
+(org-agenda-my-init-files)
+
+;;;; legacy
+;;;; set agenda files folder and regex recursively (to see tags and agenda items)
+;;;; source: https://stackoverflow.com/questions/24966333/emacs-org-mode-tags-not-found
+;;(setq org-agenda-files (append
+;;			(list "~/schedule.org")
+;;			(list "~/schedule.org.gpg")
+;;			(directory-files-recursively "~/0s4ts1d3/notes/" "\\.org$")))
+;;(setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
 
 ;; log time when org todo is done
 ;; source: https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html#org2e8459c
 (setq org-log-done t)
 
-;; break emacs
+;; breaks emacs
 ;; (setq org-ref-completion-library 'org-ref-ivy-cite)
 ;; (require 'ox-manuscript)
 ;; (setq org-latex-pdf-process 'ox-manuscript-latex-pdf-process)
 
 (setq org-ref-completion-library 'org-ref-helm)
+
+;; hide org-blocks by default
+(add-hook 'org-mode-hook 'org-hide-block-all)
+;; toggle org blocks
+(defvar org-blocks-hidden nil)
+(defun my-org-toggle-blocks ()
+  (interactive)
+  (if org-blocks-hidden
+      (org-show-block-all)
+    (org-hide-block-all))
+  (setq-local org-blocks-hidden (not org-blocks-hidden)))
+
+(add-hook 'org-mode-hook 'my-org-toggle-blocks)
+
+;; optional key
+;; (define-key org-mode-map (kbd "C-c t") 'org-toggle-blocks)
 
 ;; -------------------------------------
 ;; ORG PUBLISHING

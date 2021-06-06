@@ -66,8 +66,9 @@
   "oo" 'org-clock-out
   "ol" 'org-toggle-latex-fragment
   "op" 'org-pomodoro
-  "o'" 'org-edit-special		;to edit babel src blocks in another buffer
-  "ose" 'org-edit-special		;to edit babel src blocks in another buffer
+  "ot" 'my-org-toggle-blocks		; toggle all src, etc blocks in current buffer
+  "o'" 'org-edit-special		; to edit babel src blocks in another buffer
+  "ose" 'org-edit-special		; to edit babel src blocks in another buffer
   "oso" 'org-edit-src-exit
   "ouc" 'org-update-checkbox-count
   "oud" 'org-update-all-dblocks
