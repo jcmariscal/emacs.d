@@ -98,6 +98,7 @@
 ;; hide org-blocks by default
 (add-hook 'org-mode-hook 'org-hide-block-all)
 ;; toggle org blocks
+;; source: https://emacs.stackexchange.com/questions/7211/collapse-src-blocks-in-org-mode-by-default
 (defvar org-blocks-hidden nil)
 (defun my-org-toggle-blocks ()
   (interactive)

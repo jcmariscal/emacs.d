@@ -38,14 +38,16 @@
   "b" 'switch-to-buffer
   "q" 'quit-window
   ;; comments
-  "cc" 'evilnc-comment-or-uncomment-lines
-  "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
-  "cy" 'evilnc-copy-and-comment-lines
-  "cs" 'comment-dwim			     ; this type of comment
-  "ct" 'evilnc-comment-or-uncomment-html-tag ; evil-nerd-commenter v3.3.0 required
-  "cb" 'rebox-cycle
+  "aa" 'evilnc-comment-or-uncomment-lines
+  "al" 'evilnc-quick-comment-or-uncomment-to-the-line
+  "ay" 'evilnc-copy-and-comment-lines
+  "ad" 'comment-dwim			     ; this type of comment
+  "at" 'evilnc-comment-or-uncomment-html-tag ; evil-nerd-commenter v3.3.0 required
+  "ar" 'rebox-cycle
   ;; c shortcuts
-  "cg" 'ff-find-other-file
+  "co" 'ff-find-other-file
+  "cf" 'cscope-find-this-symbol
+  "cg" 'cscope-find-global-definition
   ;; slime
   "lb" 'slime-eval-buffer
   "ld" 'slime-eval-defun
